@@ -86,7 +86,7 @@ print(int_converter(input_int))
     """
 
 
-def print_table(cols=1, rows=1, *data):
+def print_table(cols=1, rows=1, *data ):
 
     print((" {:->" + str(cols * 14) + "}").format("-"))
 
@@ -97,4 +97,4 @@ def print_table(cols=1, rows=1, *data):
             
     print((" {:->" + str(cols * 14) + "}").format("-"))
 
-print_table(cols=3, rows=1, (["Decimal", "Octal", "Binary", "Hexadecimal"], ["230", "346", "11100110", "e6"]))
+print_table(3, 1, ["Decimal", "Octal", "Binary", "Hexadecimal"], ["230", "346", "11100110", "e6"])
