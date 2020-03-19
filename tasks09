@@ -1,0 +1,87 @@
+
+import os
+from datetime import datetime
+
+
+# Напишите функцию копирования файлов. На вход ваша функция принимает два аргумента:
+# - путь файла который необходимо скопировать
+# - путь каталога куда этот файл необходимо скопировать
+
+def copyFileDir(inFile, outDir):
+    # your code here
+    with open(inFile, 'r') as file1, open(outDir, 'w') as file2: file2.write(file1.read())
+
+
+testfile = 'tasks_13_03.py'
+testdir = 'test'
+
+
+# Напишите декоратор для превращения функции print в генератор html-тегов
+# Декоратор должен принимать список тегов italic, bold, underline
+
+text = "hello"
+def str_to_html(tags):
+    def decorator(func):
+        tag_base = {
+            "italic": f"<i>%{text}%</i>",
+            "bold": f"<b>%{text}%</b>",
+            "underline": f"<u>%{text}%</u>",
+        }
+        def wrapper(text):
+            # your code here
+            return tag_base.values()
+        return wrapper
+    return decorator
+
+
+@str_to_html(["italic", "bold", "underline"])
+def get_text(text):
+    return text
+
+print(get_text(text))
+
+
+# Напишите функцию, которая возвращает список файлов из директории.
+# Напишите декоратор для этой функции, который прочитает все файлы с
+# раширением .log из найденных
+
+path = input("path:")
+
+def log_reading(func):
+    def wrapper(*args):
+        # your code here
+        os.chdir(path)
+        for i in args:
+            if i.endswith(".log"):
+                with open(i) as file:
+                    print(file.read())
+                    func()
+    return wrapper
+
+@log_reading
+def get_files():
+    # your code here
+    file_list = os.listdir(path)
+    return file_list
+
+get_files()
+
+# Напишите функцию, которая читает и распечатывает текстовый файл.
+# Напишите декоратор к этой функции, который печатает название файла и количество слов в нем
+
+file = input("file:")
+
+def name_file(func):
+    def wrapper(*args):
+        print(file)
+        with open (file) as f:
+            print(len(f.read().split()))
+        func()
+    return wrapper
+
+@name_file  
+def print_file():
+    with open(file) as f:
+        print(f.read())
+
+print_file()
