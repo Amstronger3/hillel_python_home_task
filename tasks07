@@ -1,0 +1,118 @@
+def validate_input(data: tuple) -> bool:
+    """
+    Функция принимает список словарей, валидирует каждый из словарей на наличие
+    всех необходимых полей и тип их данных. Возвращает:
+    1. bool в зависимости от результатов проверки;
+    2. None или словарь, где ключ - тип ошибки (ValueError, KeyError),
+    а значение - список кортежей вида (ключ с ошибкой, словарь полностью).
+    Правила валидации:
+    first_name - string, не пустой, короче 48 символов
+    last_name - string, не пустой, короче 64 символов
+    birth - date, не пустой, не в будущем, не старше 100 лет
+    email - string, формат строка, затем @, затем опять строка, точка,
+    строка от 2 до 3 символов
+    Допустимые символы в email: буквы, цифры, символы (-_.)
+    """
+for key, value in data.items():
+        
+        if key == "first_name":
+            
+            if not isinstance(value, str):
+                error_dict.update(ValueError = [("not str"), (key), (data.get(key))])
+                
+            elif len(value) <= 0:
+                error_dict.update(ValueError = [("empty"), (key), (data.get(key))])
+                
+            elif len(value) >= 48:
+                error_dict.update(ValueError = [("very long"), (key), (data.get(key))])
+           
+        elif key == "last_name":
+            
+            if not isinstance(value, str) != str:
+                error_dict.update(ValueError = [("not str"), (key), (data.get(key))])
+               
+            elif len(value) <= 0:
+                error_dict.update(ValueError = [("empty"), (key), (data.get(key))])
+                
+            elif len(value) >= 64:
+                error_dict.update(ValueError = [("very long"), (key), (data.get(key))])
+
+        elif key == "birth":
+
+            delta = (datetime.date.today().year - value.year)
+                            
+            if not isinstance(value, datetime.date):
+                error_dict.update(ValueError = [("not birth"), (key), (data.get(key))])
+                
+            elif value > datetime.date.today():
+                error_dict.update(ValueError = [("future"), (key), (data.get(key))])
+               
+            elif delta > 100:
+                error_dict.update(ValueError = [("very old man"), (key), (data.get(key))])
+
+        elif key == "email":
+
+            dog = value.index("@")
+
+            for i in value:
+                if i in "!#$%&'*+-/=?^_`|~":
+                    error_dict.update(ValueError = [("symbol"), (key), (data.get(key))])
+                
+                if value[:dog].isalnum()==False:
+                    error_dict.update(ValueError = [("alnum"), (key), (data.get(key))])
+                
+                elif value.count("@") != 1:
+                    error_dict.update(ValueError = [("dog"), (key), (data.get(key))])
+                
+                elif not isinstance (value[:dog], str):
+                    error_dict.update(ValueError = [("before dog"), (key), (data.get(key))])
+                
+                elif not isinstance(value[dog:], str):
+                    error_dict.update(ValueError = [("after dog"), (key), (data.get(key))])
+                
+                elif value[-4:-3] != ".":
+                    error_dict.update(ValueError = [("dot"), (key), (data.get(key))])
+                
+                elif not isinstance (value[value.index("."):], str):
+                    error_dict.update(ValueError = [("after dot"), (key), (data.get(key))])
+
+    if error_dict:
+        return False, error_dict
+    return True
+
+
+def handle_error(error_dict) -> None:
+    """
+    Функция принимает словарь ошибок и проблемных словарей и принтит их.
+    Пример:
+    ValueError found in:
+    {"first_name": {"first_name": 42, "second_name": "Van Rossum"}}
+    {"second_name": {"first_name": "Guido", "second_name": 42}}
+    """
+    if error_dict:
+        print(error_dict)
+
+
+def save_to_db(data: list) -> bool:
+    """
+    Функция принимает кортеж словарей с данными, валидирует каждую запись с
+    помощью вспомогательной функции validate_input, и если данные валидны,
+    добавляет их в database.
+    Возвращает bool по результатам успешного/неуспешного выполнения.
+    """
+    if validate_input(data) == True:
+        database.append(data)
+        return True
+    return False
+
+
+def select_from_db(field, value):
+""" Функция возвращает кортеж словарей, где переданное значение встречается в
+    переданном ключе."""
+    for i in database:
+        for key, value in i.items():
+            if key == field and value == values:
+                print(i)
+
+
+data = ({"first_name": "Guido", "last_name": "Van Rossum", "birth": datetime.date(2020,2,25), "email": "testtest@.com"})
